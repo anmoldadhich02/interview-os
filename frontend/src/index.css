@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #09090B;
+    color: #EDEFF5;
+    min-height: 100vh;
+
+    /*
+     * BACKGROUND: pure near-black with two very subtle NEUTRAL warm-gray
+     * radial vignettes for depth. ZERO purple, ZERO blue, ZERO color tint.
+     */
+    background-image:
+      radial-gradient(ellipse 100vw 55vh at 50% 0%,
+        rgba(255,255,255,0.025) 0%,
+        transparent 70%
+      ),
+      radial-gradient(ellipse 60vw 40vh at 50% 100%,
+        rgba(255,255,255,0.012) 0%,
+        transparent 70%
+      ),
+      /* Subtle dot grid */
+      radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+
+    background-size:
+      100% 100%,
+      100% 100%,
+      40px 40px;
+
+    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Very faint noise grain — neutral, no color */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* NO body::after — that was the purple orb, it's gone */
+
+  * { position: relative; z-index: 1; }
+
+  ::selection {
+    background: rgba(99,102,241,0.35);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(129,140,248,0.8);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────── */
+@layer utilities {
+  .font-display {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'salt', 'calt';
+    letter-spacing: -0.025em;
+  }
+
+  /* Text gradients stay on TEXT only, not background */
+  .text-gradient {
+    background: linear-gradient(135deg, #fff 10%, #a5f3fc 45%, #22d3ee 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Card surfaces — dark neutral, no color tint */
+  .glass-panel {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.07);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .card-surface {
+    background: rgba(255,255,255,0.032);
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.05) inset,
+      0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  .card-surface:hover {
+    background: rgba(255,255,255,0.045);
+    border-color: rgba(255,255,255,0.11);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 8px 40px rgba(0,0,0,0.45);
+  }
+
+  /* Section label */
+  .section-label {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(129,140,248,0.85);
+  }
+
+  /* Eyebrow pill — accent color only on interactive pill, not background */
+  .eyebrow-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(129,140,248,0.9);
+    background: rgba(99,102,241,0.1);
+    border: 1px solid rgba(99,102,241,0.18);
+    border-radius: 999px;
+  }
+
+  /* Divider */
+  .hr-gradient {
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255,255,255,0.08) 30%,
+      rgba(255,255,255,0.08) 70%,
+      transparent
+    );
+    border: none;
+  }
+
+  /* Status dot */
+  .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 8px rgba(52,211,153,0.7);
+    animation: statusPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.55; transform: scale(0.82); }
+  }
+
+  /* Terminal surface — pure dark */
+  .terminal-surface {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    box-shadow:
+      0 24px 80px rgba(0,0,0,0.7),
+      0 0 0 1px rgba(255,255,255,0.03) inset;
+  }
+
+  /* Skeleton shimmer — neutral gray */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.03) 0%,
+      rgba(255,255,255,0.06) 50%,
+      rgba(255,255,255,0.03) 100%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 2.2s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .float-slow {
+    animation: floatSlow 9s ease-in-out infinite;
+  }
+
+  @keyframes floatSlow {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33%       { transform: translateY(-14px) rotate(1.2deg); }
+    66%       { transform: translateY(7px) rotate(-0.6deg); }
+  }
+
+  @keyframes scanDown {
+    0%   { top: -100%; }
+    100% { top: 200%; }
+  }
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: rgba(255,255,255,0.02); }
+::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .status-dot { animation: none !important; }
+  .float-slow { animation: none !important; }
+}
